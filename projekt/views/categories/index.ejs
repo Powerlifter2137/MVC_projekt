@@ -1,0 +1,110 @@
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-4">
+            <i class="bi bi-tags"></i> Kategorie
+        </h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Dodaj nową kategorię</h5>
+            </div>
+            <div class="card-body">
+                <form action="/categories" method="POST">
+                    <div class="mb-3">
+                        <label for="nazwa" class="form-label">Nazwa kategorii</label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="nazwa" 
+                               name="nazwa" 
+                               required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="opis" class="form-label">Opis</label>
+                        <textarea class="form-control" 
+                                  id="opis" 
+                                  name="opis" 
+                                  rows="3"
+                                  maxlength="200"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="kolor" class="form-label">Kolor</label>
+                        <input type="color" 
+                               class="form-control form-control-color" 
+                               id="kolor" 
+                               name="kolor" 
+                               value="#007bff">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-plus-circle"></i> Dodaj kategorię
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Lista kategorii</h5>
+            </div>
+            <div class="card-body">
+                <% if (categories.length === 0) { %>
+                    <p class="text-center text-muted">Brak kategorii</p>
+                <% } else { %>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Kolor</th>
+                                    <th>Nazwa</th>
+                                    <th>Opis</th>
+                                    <th>Liczba koktajli</th>
+                                    <th>Akcje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% categories.forEach(category => { %>
+                                    <tr>
+                                        <td>
+                                            <div class="color-box" 
+                                                 style="background-color: <%= category.kolor %>; 
+                                                        width: 30px; 
+                                                        height: 30px; 
+                                                        border-radius: 5px;">
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <strong><%= category.nazwa %></strong>
+                                        </td>
+                                        <td>
+                                            <%= category.opis || '-' %>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-secondary">
+                                                <%= category.liczbaKoktajli || 0 %>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <form action="/categories/<%= category._id %>?_method=DELETE" 
+                                                  method="POST" 
+                                                  class="d-inline"
+                                                  onsubmit="return confirm('Czy na pewno chcesz usunąć tę kategorię?')">
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>

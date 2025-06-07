@@ -1,0 +1,36 @@
+# Zależności
+node_modules/
+
+# Logi
+logs
+*.log
+npm-debug.log*
+
+# Pliki środowiskowe
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Pliki systemowe
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Pliki tymczasowe
+tmp/
+temp/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Build
+dist/
+build/

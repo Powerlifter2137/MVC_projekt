@@ -1,0 +1,146 @@
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h1 class="h3 mb-0">
+                    <i class="bi bi-cup-straw"></i> <%= cocktail.nazwa %>
+                </h1>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <% if (cocktail.kategoria) { %>
+                            <span class="badge" style="background-color: <%= cocktail.kategoria.kolor %>">
+                                <%= cocktail.kategoria.nazwa %>
+                            </span>
+                        <% } %>
+                        
+                        <% if (cocktail.trudnosc) { %>
+                            <span class="badge bg-secondary">
+                                Poziom: <%= cocktail.trudnosc %>
+                            </span>
+                        <% } %>
+                        
+                        <% if (cocktail.czasPrzygotowania) { %>
+                            <span class="badge bg-info">
+                                <i class="bi bi-clock"></i> <%= cocktail.czasPrzygotowania %> min
+                            </span>
+                        <% } %>
+                        
+                        <% if (cocktail.sredniaOcena > 0) { %>
+                            <div class="mt-2 text-warning">
+                                <% for(let i = 1; i <= 5; i++) { %>
+                                    <% if (i <= cocktail.sredniaOcena) { %>
+                                        <i class="bi bi-star-fill"></i>
+                                    <% } else if (i - 0.5 <= cocktail.sredniaOcena) { %>
+                                        <i class="bi bi-star-half"></i>
+                                    <% } else { %>
+                                        <i class="bi bi-star"></i>
+                                    <% } %>
+                                <% } %>
+                                <strong>(<%= cocktail.sredniaOcena.toFixed(1) %>)</strong>
+                                <small class="text-muted">na podstawie <%= cocktail.oceny.length %> ocen</small>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4><i class="bi bi-basket"></i> Składniki:</h4>
+                        <ul class="list-group list-group-flush">
+                            <% cocktail.skladnikiLista.forEach(skladnik => { %>
+                                <li class="list-group-item">
+                                    <i class="bi bi-check-circle text-success"></i> <%= skladnik %>
+                                </li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h4><i class="bi bi-list-ol"></i> Instrukcje:</h4>
+                        <div class="instructions-box p-3 bg-light rounded">
+                            <%= cocktail.instrukcje %>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sekcja ocen -->
+                <div class="mt-4">
+                    <h4><i class="bi bi-star"></i> Oceń ten koktajl:</h4>
+                    <form action="/cocktails/<%= cocktail._id %>/rate" method="POST" class="mb-3">
+                        <div class="row g-3">
+                            <div class="col-md-2">
+                                <select name="wartosc" class="form-select" required>
+                                    <option value="">Ocena</option>
+                                    <option value="5">5 ⭐</option>
+                                    <option value="4">4 ⭐</option>
+                                    <option value="3">3 ⭐</option>
+                                    <option value="2">2 ⭐</option>
+                                    <option value="1">1 ⭐</option>
+                                </select>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" 
+                                       name="komentarz" 
+                                       class="form-control" 
+                                       placeholder="Dodaj komentarz (opcjonalnie)"
+                                       maxlength="500">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-send"></i> Oceń
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <% if (cocktail.oceny && cocktail.oceny.length > 0) { %>
+                        <h5>Ostatnie oceny:</h5>
+                        <div class="reviews-container">
+                            <% cocktail.oceny.slice(-5).reverse().forEach(ocena => { %>
+                                <div class="review-item p-2 border-bottom">
+                                    <div class="text-warning">
+                                        <% for(let i = 1; i <= ocena.wartosc; i++) { %>
+                                            <i class="bi bi-star-fill"></i>
+                                        <% } %>
+                                        <% for(let i = ocena.wartosc + 1; i <= 5; i++) { %>
+                                            <i class="bi bi-star"></i>
+                                        <% } %>
+                                    </div>
+                                    <% if (ocena.komentarz) { %>
+                                        <p class="mb-1"><%= ocena.komentarz %></p>
+                                    <% } %>
+                                    <small class="text-muted">
+                                        <%= new Date(ocena.createdAt).toLocaleDateString('pl-PL') %>
+                                    </small>
+                                </div>
+                            <% }) %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+            
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <a href="/" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Powrót
+                    </a>
+                    <div>
+                        <a href="/cocktails/<%= cocktail._id %>/edit" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Edytuj
+                        </a>
+                        <form action="/cocktails/<%= cocktail._id %>?_method=DELETE" 
+                              method="POST" 
+                              class="d-inline"
+                              onsubmit="return confirm('Czy na pewno chcesz usunąć ten koktajl?')">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Usuń
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

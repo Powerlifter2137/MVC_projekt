@@ -1,0 +1,127 @@
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="card shadow">
+            <div class="card-header bg-warning">
+                <h2 class="h4 mb-0">
+                    <i class="bi bi-pencil"></i> Edytuj koktajl
+                </h2>
+            </div>
+            <div class="card-body">
+                <% if (errors && errors.length > 0) { %>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Wystąpiły błędy:</strong>
+                        <ul class="mb-0">
+                            <% errors.forEach(error => { %>
+                                <li><%= error.msg %></li>
+                            <% }) %>
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <% } %>
+                
+                <form action="/cocktails/<%= cocktail._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="nazwa" class="form-label">
+                            <i class="bi bi-cup-straw"></i> Nazwa koktajlu *
+                        </label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="nazwa" 
+                               name="nazwa" 
+                               value="<%= oldInput.nazwa || '' %>"
+                               required 
+                               minlength="3" 
+                               maxlength="100">
+                        <div class="invalid-feedback">
+                            Nazwa musi mieć między 3 a 100 znaków.
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="kategoria" class="form-label">
+                                <i class="bi bi-tags"></i> Kategoria
+                            </label>
+                            <select class="form-select" id="kategoria" name="kategoria">
+                                <option value="">Wybierz kategorię</option>
+                                <% categories.forEach(category => { %>
+                                    <option value="<%= category._id %>" 
+                                            <%= oldInput.kategoria == category._id ? 'selected' : '' %>>
+                                        <%= category.nazwa %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="trudnosc" class="form-label">
+                                <i class="bi bi-speedometer2"></i> Poziom trudności
+                            </label>
+                            <select class="form-select" id="trudnosc" name="trudnosc">
+                                <option value="łatwy" <%= oldInput.trudnosc === 'łatwy' ? 'selected' : '' %>>Łatwy</option>
+                                <option value="średni" <%= oldInput.trudnosc === 'średni' ? 'selected' : '' %>>Średni</option>
+                                <option value="trudny" <%= oldInput.trudnosc === 'trudny' ? 'selected' : '' %>>Trudny</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4 mb-3">
+                            <label for="czasPrzygotowania" class="form-label">
+                                <i class="bi bi-clock"></i> Czas przygotowania (min)
+                            </label>
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="czasPrzygotowania" 
+                                   name="czasPrzygotowania"
+                                   value="<%= oldInput.czasPrzygotowania || '' %>"
+                                   min="1" 
+                                   max="60">
+                            <div class="invalid-feedback">
+                                Czas musi być między 1 a 60 minut.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="skladniki" class="form-label">
+                            <i class="bi bi-basket"></i> Składniki * 
+                            <small class="text-muted">(każdy składnik w nowej linii)</small>
+                        </label>
+                        <textarea class="form-control" 
+                                  id="skladniki" 
+                                  name="skladniki" 
+                                  rows="5" 
+                                  required 
+                                  minlength="10"><%= oldInput.skladniki || '' %></textarea>
+                        <div class="invalid-feedback">
+                            Opis składników musi mieć co najmniej 10 znaków.
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="instrukcje" class="form-label">
+                            <i class="bi bi-list-ol"></i> Instrukcje przygotowania *
+                        </label>
+                        <textarea class="form-control" 
+                                  id="instrukcje" 
+                                  name="instrukcje" 
+                                  rows="5" 
+                                  required 
+                                  minlength="20"><%= oldInput.instrukcje || '' %></textarea>
+                        <div class="invalid-feedback">
+                            Instrukcje muszą mieć co najmniej 20 znaków.
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="/cocktails/<%= cocktail._id %>" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Anuluj
+                        </a>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-save"></i> Zapisz zmiany
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

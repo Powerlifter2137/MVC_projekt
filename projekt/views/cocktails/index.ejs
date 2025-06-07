@@ -1,0 +1,121 @@
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-4">
+            <i class="bi bi-cup-straw"></i> Nasze Koktajle
+        </h1>
+    </div>
+</div>
+
+<!-- Wyszukiwanie i filtrowanie -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" action="/" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" 
+                       name="search" 
+                       class="form-control" 
+                       placeholder="Szukaj po nazwie lub składnikach..."
+                       value="<%= search %>">
+            </div>
+            <div class="col-md-3">
+                <select name="kategoria" class="form-select">
+                    <option value="">Wszystkie kategorie</option>
+                    <% categories.forEach(category => { %>
+                        <option value="<%= category._id %>" 
+                                <%= selectedCategory == category._id ? 'selected' : '' %>>
+                            <%= category.nazwa %>
+                        </option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="sortuj" class="form-select">
+                    <option value="najnowsze" <%= sortBy === 'najnowsze' ? 'selected' : '' %>>Najnowsze</option>
+                    <option value="nazwa" <%= sortBy === 'nazwa' ? 'selected' : '' %>>Nazwa A-Z</option>
+                    <option value="ocena" <%= sortBy === 'ocena' ? 'selected' : '' %>>Najlepiej oceniane</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="bi bi-search"></i> Szukaj
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Lista koktajli -->
+<div class="row">
+    <% if (cocktails.length === 0) { %>
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle"></i> 
+                Nie znaleziono żadnych koktajli. 
+                <a href="/cocktails/new" class="alert-link">Dodaj pierwszy!</a>
+            </div>
+        </div>
+    <% } else { %>
+        <% cocktails.forEach(cocktail => { %>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 cocktail-card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="bi bi-cup-straw"></i> <%= cocktail.nazwa %>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <% if (cocktail.kategoria) { %>
+                            <span class="badge" style="background-color: <%= cocktail.kategoria.kolor %>">
+                                <%= cocktail.kategoria.nazwa %>
+                            </span>
+                        <% } %>
+                        
+                        <% if (cocktail.trudnosc) { %>
+                            <span class="badge bg-secondary">
+                                <%= cocktail.trudnosc %>
+                            </span>
+                        <% } %>
+                        
+                        <% if (cocktail.czasPrzygotowania) { %>
+                            <span class="badge bg-info">
+                                <i class="bi bi-clock"></i> <%= cocktail.czasPrzygotowania %> min
+                            </span>
+                        <% } %>
+                        
+                        <div class="mt-2">
+                            <% if (cocktail.sredniaOcena > 0) { %>
+                                <div class="text-warning">
+                                    <% for(let i = 1; i <= 5; i++) { %>
+                                        <% if (i <= cocktail.sredniaOcena) { %>
+                                            <i class="bi bi-star-fill"></i>
+                                        <% } else if (i - 0.5 <= cocktail.sredniaOcena) { %>
+                                            <i class="bi bi-star-half"></i>
+                                        <% } else { %>
+                                            <i class="bi bi-star"></i>
+                                        <% } %>
+                                    <% } %>
+                                    <small>(<%= cocktail.sredniaOcena.toFixed(1) %>)</small>
+                                </div>
+                            <% } %>
+                        </div>
+                        
+                        <p class="card-text mt-3">
+                            <strong>Składniki:</strong><br>
+                            <%= cocktail.skladniki.substring(0, 100) %><%= cocktail.skladniki.length > 100 ? '...' : '' %>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group w-100" role="group">
+                            <a href="/cocktails/<%= cocktail._id %>" class="btn btn-outline-primary">
+                                <i class="bi bi-eye"></i> Zobacz
+                            </a>
+                            <a href="/cocktails/<%= cocktail._id %>/edit" class="btn btn-outline-warning">
+                                <i class="bi bi-pencil"></i> Edytuj
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    <% } %>
+</div>
