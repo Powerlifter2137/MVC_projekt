@@ -67,6 +67,7 @@ Aplikacja webowa do zarządzania kolekcją przepisów na koktajle, zbudowana w o
 Aplikacja będzie dostępna pod adresem: `http://localhost:3000`
 
 ## Struktura projektu
+```
 cocktail-collection/
 ├── config/
 │   └── database.js          # Konfiguracja połączenia z bazą danych
@@ -105,7 +106,7 @@ cocktail-collection/
 ├── package-lock.json
 ├── server.js                # Główny plik aplikacji
 └── README.md               # Ten plik
-
+```
 
 ## Technologie
 - **Backend:**
