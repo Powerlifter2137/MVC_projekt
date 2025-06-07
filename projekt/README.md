@@ -1,14 +1,5 @@
 # Kolekcja Ulubionych Przepisów do Koktajli
 
-## Spis treści
-1. [Opis projektu](#opis-projektu)
-2. [Funkcjonalności](#funkcjonalności)
-3. [Wymagania systemowe](#wymagania-systemowe)
-4. [Instrukcja instalacji](#instrukcja-instalacji)
-5. [Uruchomienie aplikacji](#uruchomienie-aplikacji)
-6. [Struktura projektu](#struktura-projektu)
-7. [Technologie](#technologie)
-8. [Autor](#autor)
 
 ## Opis projektu
 Aplikacja webowa do zarządzania kolekcją przepisów na koktajle, zbudowana w oparciu o wzorzec architektoniczny MVC. Umożliwia dodawanie, edycję, usuwanie oraz przeglądanie przepisów na ulubione drinki.
@@ -38,9 +29,7 @@ Aplikacja webowa do zarządzania kolekcją przepisów na koktajle, zbudowana w o
 ## Instrukcja instalacji
 
 1. **Sklonuj repozytorium:**
-   
-   git clone https://github.com/twoje-konto/cocktail-collection.git
-   cd cocktail-collection
+  klonujemy i wchodzimy w folder projektu
    
 
 2. **Zainstaluj zależności:**
@@ -49,7 +38,6 @@ Aplikacja webowa do zarządzania kolekcją przepisów na koktajle, zbudowana w o
    
 
 3. **Skonfiguruj bazę danych:**
-   - Utwórz plik `.env` na podstawie `.env.example`
    - Opcja 1: Zainstaluj MongoDB lokalnie i użyj `mongodb://localhost:27017/cocktail-db`
    - Opcja 2: Użyj MongoDB Atlas (darmowe konto) i podmień connection string
    - Upewnij się, że MongoDB jest uruchomione
