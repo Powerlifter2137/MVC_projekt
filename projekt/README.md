@@ -68,7 +68,7 @@ Aplikacja będzie dostępna pod adresem: `http://localhost:3000`
 
 ## Struktura projektu
 ```
-cocktail-collection/
+projekt/
 ├── config/
 │   └── database.js          # Konfiguracja połączenia z bazą danych
 ├── controllers/
