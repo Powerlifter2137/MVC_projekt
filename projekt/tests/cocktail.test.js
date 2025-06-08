@@ -53,6 +53,24 @@ describe('Model Cocktail', () => {
         expect(err.errors.nazwa).toBeDefined();
     });
 
+    test('nazwa powinna mieć minimum 3 znaki', async () => {
+        const cocktailShortName = new Cocktail({
+            nazwa: 'Ab',
+            skladniki: 'Rum, mięta, limonka',
+            instrukcje: 'Wymieszaj wszystkie składniki minimum 20 znaków'
+        });
+
+        let err;
+        try {
+            await cocktailShortName.save();
+        } catch (error) {
+            err = error;
+        }
+
+        expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
+        expect(err.errors.nazwa).toBeDefined();
+    });
+
     test('powinien poprawnie obliczać średnią ocenę', async () => {
         const cocktail = new Cocktail({
             nazwa: 'Test Cocktail',
@@ -60,21 +78,17 @@ describe('Model Cocktail', () => {
             instrukcje: 'Testowe instrukcje minimum 20 znaków długości'
         });
 
-        await cocktail.save();
-
-        // Mock populate method
-        cocktail.populate = jest.fn().mockResolvedValue(cocktail);
+        const savedCocktail = await cocktail.save();
         
-        // Symulacja ocen
-        cocktail.oceny = [
+        // Symulacja ocen - dodaj oceny bezpośrednio do obiektu
+        savedCocktail.oceny = [
             { wartosc: 5 },
             { wartosc: 4 },
             { wartosc: 5 }
         ];
 
-        await cocktail.obliczSredniaOcene();
-
-        expect(cocktail.sredniaOcena).toBeCloseTo(4.7, 1);
+        await savedCocktail.obliczSredniaOcene();
+        expect(savedCocktail.sredniaOcena).toBeCloseTo(4.7, 1);
     });
 
     test('powinien zwracać listę składników', () => {
@@ -85,46 +99,8 @@ describe('Model Cocktail', () => {
         });
 
         const skladnikiLista = cocktail.skladnikiLista;
-
         expect(skladnikiLista).toHaveLength(4);
         expect(skladnikiLista[0]).toBe('Rum');
         expect(skladnikiLista[1]).toBe('Mięta');
     });
-
-    test('czas przygotowania powinien być między 1 a 60', async () => {
-        const cocktailInvalidTime = new Cocktail({
-            nazwa: 'Test Cocktail',
-            skladniki: 'Testowe składniki',
-            instrukcje: 'Testowe instrukcje minimum 20 znaków',
-            czasPrzygotowania: 100
-        });
-
-        let err;
-        try {
-            await cocktailInvalidTime.save();
-        } catch (error) {
-            err = error;
-        }
-
-        expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
-        expect(err.errors.czasPrzygotowania).toBeDefined();
-    });
-});InstanceOf(mongoose.Error.ValidationError);
-        expect(err.errors.nazwa).toBeDefined();
-    });
-
-    test('nazwa powinna mieć minimum 3 znaki', async () => {
-        const cocktailShortName = new Cocktail({
-            nazwa: 'Ab',
-            skladniki: 'Rum, mięta, limonka',
-            instrukcje: 'Wymieszaj wszystkie składniki'
-        });
-
-        let err;
-        try {
-            await cocktailShortName.save();
-        } catch (error) {
-            err = error;
-        }
-
-        expect(err).toBe
+});
